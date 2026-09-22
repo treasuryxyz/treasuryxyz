@@ -58,7 +58,7 @@ export default async function ListingPage({ params }: Params) {
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_22rem]">
         <div>
           <div className="overflow-hidden rounded-panel border border-stroke">
-            <ObjectPlate listing={listing} />
+            <ObjectPlate listing={listing} detail />
           </div>
 
           <h1 className="mt-7 font-display text-2xl font-extrabold tracking-tight text-balance sm:text-3xl">

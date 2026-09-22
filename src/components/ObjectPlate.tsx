@@ -1,4 +1,5 @@
 import type { Category, Listing } from "@/lib/vault";
+import { GradedSlab } from "@/components/GradedSlab";
 
 /**
  * Objects in custody are photographed on intake, but those frames are not
@@ -73,26 +74,42 @@ function Glyph({ category }: { category: Category }) {
   }
 }
 
-export function ObjectPlate({ listing }: { listing: Listing }) {
+export function ObjectPlate({
+  listing,
+  detail = false,
+}: {
+  listing: Listing;
+  detail?: boolean;
+}) {
   const seed = hash(listing.serial);
   const rotation = (seed % 24) - 12;
   const offsetX = 20 + (seed % 60);
   const offsetY = 20 + ((seed >> 5) % 60);
   const band = 38 + ((seed >> 9) % 26);
+  const isCard = listing.category === "cards";
 
   return (
     <div
-      aria-hidden="true"
-      className="relative h-40 overflow-hidden border-b border-stroke bg-vault"
+      className={`relative overflow-hidden border-b border-stroke bg-vault ${
+        isCard
+          ? detail
+            ? "h-[26rem] sm:h-[30rem]"
+            : "aspect-[5/4]"
+          : detail
+            ? "h-64"
+            : "h-40"
+      }`}
     >
       {/* Deterministic ground: a sweep of gold light placed by the serial. */}
       <div
+        aria-hidden="true"
         className="absolute inset-0"
         style={{
           background: `radial-gradient(120% 90% at ${offsetX}% ${offsetY}%, rgba(245,197,24,0.20), rgba(245,197,24,0.04) 45%, transparent 72%)`,
         }}
       />
       <div
+        aria-hidden="true"
         className="absolute inset-0 opacity-[0.16]"
         style={{
           backgroundImage:
@@ -102,17 +119,31 @@ export function ObjectPlate({ listing }: { listing: Listing }) {
       />
 
       <div className="absolute inset-0 flex items-center justify-center">
-        <svg
-          viewBox="0 0 36 36"
-          className="size-16 text-gold/85 drop-shadow-[0_0_18px_rgba(245,197,24,0.25)]"
-        >
-          <Glyph category={listing.category} />
-        </svg>
+        {isCard ? (
+          <GradedSlab
+            listing={listing}
+            className={
+              detail
+                ? "w-[58%] max-w-[190px] sm:max-w-[290px]"
+                : "w-[62%] max-w-[168px]"
+            }
+          />
+        ) : (
+          <svg
+            viewBox="0 0 36 36"
+            aria-hidden="true"
+            className="size-16 text-gold/85 drop-shadow-[0_0_18px_rgba(245,197,24,0.25)]"
+          >
+            <Glyph category={listing.category} />
+          </svg>
+        )}
       </div>
 
-      <span className="absolute bottom-2.5 left-3 font-mono text-[10px] tracking-[0.18em] text-gold/60 uppercase">
-        {listing.grade} · {listing.grader}
-      </span>
+      {isCard ? null : (
+        <span className="absolute bottom-2.5 left-3 font-mono text-[10px] tracking-[0.18em] text-gold/60 uppercase">
+          {listing.grade} · {listing.grader}
+        </span>
+      )}
     </div>
   );
 }

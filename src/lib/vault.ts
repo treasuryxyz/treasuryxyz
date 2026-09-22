@@ -31,6 +31,12 @@ export type Listing = {
   vault: string;
   insuredTo: number;
   notes: string;
+  /**
+   * Intake photograph, when the depositor has cleared it for publication.
+   * Absent on most titles, and the interface draws house artwork instead —
+   * never a frame lifted from somewhere else.
+   */
+  image?: string;
 };
 
 export const categoryLabels: Record<Category, string> = {
@@ -65,6 +71,102 @@ export const listings: Listing[] = [
     insuredTo: 62000,
     notes:
       "Corners sharp under raking light, centering measured at 55/45. Slab reseated in 2024 after a hairline case crack; the card itself was untouched.",
+  },
+  {
+    id: "tl-0126",
+    serial: "TL-0126-EM",
+    title: "Ember Warden, Holo Base Print",
+    category: "cards",
+    year: 1999,
+    grade: "9",
+    grader: "Caliper Grading",
+    ask: 62.5,
+    last: 58.4,
+    status: "listed",
+    vault: "Newark Depository",
+    insuredTo: 212000,
+    notes:
+      "First-run holo with the thin left border the early sheets are known for. Surface clean under angled light; one faint print dot in the lower field.",
+  },
+  {
+    id: "tl-0198",
+    serial: "TL-0198-TD",
+    title: "Tidecaller, Reverse Holo Promo",
+    category: "cards",
+    year: 2002,
+    grade: "9.5",
+    grader: "Caliper Grading",
+    ask: 9.85,
+    last: 9.1,
+    status: "listed",
+    vault: "Newark Depository",
+    insuredTo: 33000,
+    notes:
+      "Promo stamp crisp and fully inked. Centering 52/48 left to right, 55/45 top to bottom.",
+  },
+  {
+    id: "tl-0274",
+    serial: "TL-0274-VG",
+    title: "Verdant Glade, Full Art Secret",
+    category: "cards",
+    year: 2019,
+    grade: "10",
+    grader: "Caliper Grading",
+    ask: 27.4,
+    last: 24.9,
+    status: "listed",
+    vault: "Newark Depository",
+    insuredTo: 94000,
+    notes:
+      "Texture intact across the full art panel, corners square under magnification. Pulled from a sealed case break with the wrapper retained.",
+  },
+  {
+    id: "tl-0335",
+    serial: "TL-0335-SK",
+    title: "Stormkeeper, First Edition Shadowless",
+    category: "cards",
+    year: 1999,
+    grade: "8.5",
+    grader: "Caliper Grading",
+    ask: 118.0,
+    last: null,
+    status: "listed",
+    vault: "Zurich Annex",
+    insuredTo: 405000,
+    notes:
+      "First edition stamp well struck. Two light edge nicks along the right border keep it out of a nine; the holo layer itself is unscratched.",
+  },
+  {
+    id: "tl-0482",
+    serial: "TL-0482-LN",
+    title: "Lanternfish, Error Miscut",
+    category: "cards",
+    year: 2005,
+    grade: "7",
+    grader: "Caliper Grading",
+    ask: 4.6,
+    last: 5.2,
+    status: "vaulted",
+    vault: "Newark Depository",
+    insuredTo: 15000,
+    notes:
+      "Genuine factory miscut showing roughly four millimetres of the neighbouring card. Graded low on centering by design; the error is the point.",
+  },
+  {
+    id: "tl-0640",
+    serial: "TL-0640-AR",
+    title: "Arcwing, Staff Prerelease",
+    category: "cards",
+    year: 2011,
+    grade: "9",
+    grader: "Caliper Grading",
+    ask: 38.2,
+    last: 36.0,
+    status: "collateralized",
+    vault: "Zurich Annex",
+    insuredTo: 129000,
+    notes:
+      "Staff foil stamp in the lower right. Posted against an open credit line, so the title cannot move until that line is cleared.",
   },
   {
     id: "tl-0902",

@@ -1,0 +1,74 @@
+"use client";
+
+import { useCallback, useSyncExternalStore } from "react";
+
+/**
+ * A localStorage-backed value read through `useSyncExternalStore`, so every
+ * component reading the same key stays in step without copying into state.
+ * Blocked or private storage simply reads as empty.
+ */
+
+const listeners = new Set<() => void>();
+const snapshots = new Map<string, string | null>();
+
+function emit() {
+  for (const listener of listeners) listener();
+}
+
+function subscribe(listener: () => void) {
+  listeners.add(listener);
+  const onStorage = () => {
+    snapshots.clear();
+    emit();
+  };
+  window.addEventListener("storage", onStorage);
+  return () => {
+    listeners.delete(listener);
+    window.removeEventListener("storage", onStorage);
+  };
+}
+
+function read(key: string) {
+  if (snapshots.has(key)) return snapshots.get(key) ?? null;
+  let value: string | null = null;
+  try {
+    value = window.localStorage.getItem(key);
+  } catch {
+    value = null;
+  }
+  snapshots.set(key, value);
+  return value;
+}
+
+export function useLocalStore<T>(key: string, fallback: T) {
+  const raw = useSyncExternalStore(
+    subscribe,
+    () => read(key),
+    () => null,
+  );
+
+  const value = (() => {
+    if (raw === null) return fallback;
+    try {
+      return JSON.parse(raw) as T;
+    } catch {
+      return fallback;
+    }
+  })();
+
+  const write = useCallback(
+    (next: T | null) => {
+      try {
+        if (next === null) window.localStorage.removeItem(key);
+        else window.localStorage.setItem(key, JSON.stringify(next));
+      } catch {
+        // Losing persistence is survivable; the snapshot still updates.
+      }
+      snapshots.set(key, next === null ? null : JSON.stringify(next));
+      emit();
+    },
+    [key],
+  );
+
+  return [value, write] as const;
+}
